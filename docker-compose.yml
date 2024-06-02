@@ -34,6 +34,22 @@ services:
       - vm_net
       - app_net
 
+  rails_migrations:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    depends_on:
+      - postgres
+    environment:
+      - DATABASE_URL=postgres://postgres:postgres@postgres:5432
+    volumes:
+      - .:/app
+    networks:
+      - app_net
+    command: >
+      /bin/sh -c "
+      bundle exec rails db:create db:migrate"
+
   vmagent:
     image: victoriametrics/vmagent:latest
     depends_on:
