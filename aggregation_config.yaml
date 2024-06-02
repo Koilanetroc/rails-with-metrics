@@ -1,0 +1,39 @@
+- match: '{ ag_t="1" }' # measurement
+  interval: 5s
+  outputs: [sum_samples, count_samples, min, max, histogram_bucket]
+  output_relabel_configs:
+  - action: replace_all
+    source_labels: [__name__]
+    target_label: "__name__"
+    regex: "5s_"
+    replacement: ""
+
+- match: '{ ag_t="2" }' # gauge
+  interval: 5s
+  outputs: [last, histogram_bucket, count_samples]
+  output_relabel_configs:
+  - action: replace_all
+    source_labels: [__name__]
+    target_label: "__name__"
+    regex: "5s_"
+    replacement: ""
+
+- match: '{ ag_t="3" }' # counter
+  interval: 5s
+  outputs: [sum_samples, count_samples]
+  output_relabel_configs:
+  - action: replace_all
+    source_labels: [__name__]
+    target_label: "__name__"
+    regex: "5s_"
+    replacement: ""
+
+- match: '{ __name__=~"datadog.dogstatsd.client.*" }'
+  interval: 5s
+  outputs: [sum_samples, count_samples, min, max, histogram_bucket]
+  output_relabel_configs:
+  - action: replace_all
+    source_labels: [__name__]
+    target_label: "__name__"
+    regex: "5s_"
+    replacement: ""
